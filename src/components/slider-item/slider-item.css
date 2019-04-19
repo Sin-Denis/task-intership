@@ -1,0 +1,27 @@
+.slider-item {
+    margin: 0 auto;
+    background-color: #fff;
+    width: 420px;
+    border-radius: 5px;
+    box-shadow: 0 1.2246px 6.12299px rgba(0, 0, 0, 0.2), 0 3.6738px 4.8984px rgba(0, 0, 0, 0.12), 0 2.4492px 4.8984px rgba(0, 0, 0, 0.14);
+}
+
+.slider-item-rotate-left {
+    transform: rotate(15deg);
+}
+
+.slider-item-img {
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.slider-item-options {
+    padding: 5px 0;
+    margin: auto 0 auto auto;
+    width: 30%;
+}
+
+.slider-item-options img {
+    margin-right: 20px;
+}
