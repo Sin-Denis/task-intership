@@ -7,12 +7,19 @@ import './slider-item.css';
 
 export default class SliderItem extends Component {
   render() {
+    let SliderItemClasses = "slider-item";
+    if (this.props.position === -1) {
+      SliderItemClasses += " slider-item-min slider-item-left";
+    } else if (this.props.position === 1) {
+      SliderItemClasses += " slider-item-min slider-item-right";
+    }
     return (
-      <div className="slider-item">
+      <div className={SliderItemClasses}>
         <img
           className="slider-item-img"
           src={this.props.url}
-          alt="i"/>
+          alt="i"
+        />
         <div className="slider-item-options">
           <img src={Heart} alt="heart"/>
           <img src={Bookmark} alt="bookmark"/>

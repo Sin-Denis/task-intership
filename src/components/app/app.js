@@ -40,7 +40,7 @@ export default class App extends Component {
   }
 
   next = () => {
-    if (this.state.idx === this.state.pictures.length - 1)
+    if (this.state.idx + 2 === this.state.pictures.length - 1)
       this.getPicture(1);
     this.setState(({idx}) => {
       const newIdx = idx + 1;
@@ -65,7 +65,17 @@ export default class App extends Component {
     return (
       <div className="app">
         <div className="slider-body">
-          <SliderItem url={this.state.pictures[this.state.idx]}/>
+          <SliderItem
+            position={-1}
+            url={this.state.pictures[this.state.idx]}
+          />
+          <SliderItem
+            url={this.state.pictures[this.state.idx + 1]}
+          />
+          <SliderItem
+            position={1}
+            url={this.state.pictures[this.state.idx + 2]}
+          />
         </div>
         <div className="slider-buttons">
           <Button
