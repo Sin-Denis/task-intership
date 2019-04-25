@@ -1,17 +1,20 @@
-import React, {Component} from 'react'
-import './app.css'
+import React, {Component} from 'react';
+import './app.css';
+
 
 import SliderItem from '../slider-item';
+// import Loader from '../loader';
 import Button from '../button';
 
 export default class App extends Component {
 
   state = {
+    load: false,
     idx: 0,
     pictures: []
   };
 
-  getPicture = async (place) => {
+  getPictures = async (place) => {
     const url = 'https://picsum.photos/419/172/?random';
     let newPictures = [];
     for (let i = 0; i < 10; ++i) {
@@ -20,28 +23,31 @@ export default class App extends Component {
       let resURL =  await URL.createObjectURL(blobObj);
       newPictures.push(resURL);
     }
-    this.setState(({idx, pictures}) => {
-      if (place === 1) {
+    this.setState(({idx, pictures, load}) => {
+      if (place === 'end') {
         return {
+          load: true,
           pictures: [...pictures, ...newPictures]
         };
-      } else {
+      } else if (place === 'begin') {
         return {
+          load: true,
           idx: 9,
           pictures: [...newPictures, ...pictures]
         };
       }
-
     });
   };
 
-  componentWillMount() {
-    this.getPicture(1);
-  }
-
   next = () => {
-    if (this.state.idx + 2 === this.state.pictures.length - 1)
-      this.getPicture(1);
+    if (this.state.idx % 10 === 7) {
+      this.setState(() => {
+        return {
+          load: false
+        }
+      });
+      this.getPictures('end');
+    }
     this.setState(({idx}) => {
       const newIdx = idx + 1;
       return {
@@ -51,29 +57,48 @@ export default class App extends Component {
   };
 
   prev = () => {
-    if (this.state.idx === 0)
-      this.getPicture(-1);
-    this.setState(({idx}) => {
-      const newIdx = idx - 1;
-      return {
-        idx: newIdx
-      };
-    });
+    if (this.state.idx === 0) {
+      this.setState(() => {
+        return {
+          load: false
+        }
+      });
+      this.getPictures('begin');
+      this.setState(() => {
+        return {
+          idx: 9
+        };
+      });
+    } else {
+      this.setState(({ idx }) => {
+        const newIdx = idx - 1;
+        return {
+          idx: newIdx
+        };
+      });
+    }
   };
+
+  componentWillMount() {
+    this.getPictures('end');
+  }
 
   render() {
     return (
       <div className="app">
         <div className="slider-body">
           <SliderItem
-            position={-1}
+            load={this.state.load}
+            position={"left"}
             url={this.state.pictures[this.state.idx]}
           />
           <SliderItem
+            load={this.state.load}
             url={this.state.pictures[this.state.idx + 1]}
           />
           <SliderItem
-            position={1}
+            load={this.state.load}
+            position={"right"}
             url={this.state.pictures[this.state.idx + 2]}
           />
         </div>
@@ -86,6 +111,7 @@ export default class App extends Component {
             label="next"
             btnClick={this.next}
           />
+          {/*<Loader/>*/}
         </div>
       </div>
     );
